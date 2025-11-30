@@ -16,12 +16,13 @@ import androidx.room.Room;
 
 import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity {
-
+public class SettingsActivity extends AppCompatActivity
+{
     private AppDatabase db;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_settings);
@@ -32,7 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Set description text
+        // Description for how to do CRUD ops
         TextView description = findViewById(R.id.settings_description);
         description.setText("Tap to change the interaction type. \nHold to delete the interaction.");
 
@@ -59,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         InteractionAdapter adapter = new InteractionAdapter(this, interactions, interactionDao);
         recyclerView.setAdapter(adapter);
 
-        // Back button
+        // Back button returns to main screen
         ImageView backButton = findViewById(R.id.back_button_settings);
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
@@ -68,4 +69,3 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 }
-

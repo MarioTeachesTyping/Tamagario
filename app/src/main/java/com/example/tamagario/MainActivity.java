@@ -38,15 +38,13 @@ public class MainActivity extends AppCompatActivity
         // Pet image
         petImage = findViewById(R.id.tamagario);
 
-        // ---------------------------
         // Set up Room database
-        // ---------------------------
         db = Room.databaseBuilder(
                         getApplicationContext(),
                         AppDatabase.class,
                         "tamagario-db"
                 )
-                // for simplicity in a school project; normally you'd use background threads
+                // For simplicity. works a diff way apparently
                 .allowMainThreadQueries()
                 .build();
 
@@ -55,7 +53,8 @@ public class MainActivity extends AppCompatActivity
 
         // Get existing pet or create a default one
         currentPet = petDao.getSinglePet();
-        if (currentPet == null) {
+        if (currentPet == null)
+        {
             currentPet = new Pet();
             currentPet.name = "Tamagario";
             currentPet.hunger = 0;
@@ -70,9 +69,7 @@ public class MainActivity extends AppCompatActivity
         // Set initial image based on stats (perfect vs normal)
         updatePetImage();
 
-        // ---------------------------
         // Navigation buttons
-        // ---------------------------
         ImageView dataBtn = findViewById(R.id.data_button);
         ImageView settingsBtn = findViewById(R.id.settings_button);
 
@@ -86,9 +83,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         });
 
-        // ---------------------------
         // Interaction buttons
-        // ---------------------------
         ImageView playBtn = findViewById(R.id.play_button);
         ImageView feedBtn = findViewById(R.id.feed_button);
         ImageView cleanBtn = findViewById(R.id.clean_button);
@@ -167,16 +162,21 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    // Sets image based on current stats (no 1-second logic here)
-    private void updatePetImage() {
-        if (isPetPerfect()) {
+    // Sets image based on current stats
+    private void updatePetImage()
+    {
+        if (isPetPerfect())
+        {
             petImage.setImageResource(R.drawable.tamagario_perfect);
-        } else {
+        }
+        else
+        {
             petImage.setImageResource(R.drawable.tamagario);
         }
     }
 
-    private boolean isPetPerfect() {
+    private boolean isPetPerfect()
+    {
         return currentPet.hunger == 100 &&
                 currentPet.energy == 100 &&
                 currentPet.happiness == 100 &&
@@ -184,9 +184,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     // Show happy for 1 second, then revert to normal or perfect
-    private void showHappyTemporarily() {
+    private void showHappyTemporarily()
+    {
         // If pet is perfect after this interaction, just show perfect permanently
-        if (isPetPerfect()) {
+        if (isPetPerfect())
+        {
             petImage.setImageResource(R.drawable.tamagario_perfect);
             return;
         }
@@ -197,9 +199,12 @@ public class MainActivity extends AppCompatActivity
         // After 1 second, revert to normal (or perfect if it somehow became perfect)
         handler.removeCallbacksAndMessages(null);
         handler.postDelayed(() -> {
-            if (isPetPerfect()) {
+            if (isPetPerfect())
+            {
                 petImage.setImageResource(R.drawable.tamagario_perfect);
-            } else {
+            }
+            else
+            {
                 petImage.setImageResource(R.drawable.tamagario);
             }
         }, 1000); // 1000 ms = 1 second

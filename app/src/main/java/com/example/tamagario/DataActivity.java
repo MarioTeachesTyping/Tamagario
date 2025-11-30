@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
-public class DataActivity extends AppCompatActivity {
-
+public class DataActivity extends AppCompatActivity
+{
     private AppDatabase db;
     private Pet currentPet;
 
@@ -21,11 +21,12 @@ public class DataActivity extends AppCompatActivity {
     private TextView dataDescription;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
 
-        // --- Room setup ---
+        // Room setup
         db = Room.databaseBuilder(
                         getApplicationContext(),
                         AppDatabase.class,
@@ -38,7 +39,8 @@ public class DataActivity extends AppCompatActivity {
         currentPet = petDao.getSinglePet();
 
         // If somehow no pet exists yet, create a default one
-        if (currentPet == null) {
+        if (currentPet == null)
+        {
             currentPet = new Pet();
             currentPet.name = "Tamagario";
             currentPet.hunger = 0;
@@ -49,7 +51,7 @@ public class DataActivity extends AppCompatActivity {
             currentPet.id = id;
         }
 
-        // --- Views ---
+        // Views
         happinessBar = findViewById(R.id.happiness_bar);
         hungerBar = findViewById(R.id.hunger_bar);
         hygieneBar = findViewById(R.id.hygiene_bar);
@@ -69,7 +71,7 @@ public class DataActivity extends AppCompatActivity {
         hygieneBar.setProgress(currentPet.hygiene);
         energyBar.setProgress(currentPet.energy);
 
-        // Description + stats
+        // Description of app and stats
         String summary =
                         "Take care of your pet Mario by interacting with him in different actions! " +
                         "Play, feed, clean, or let him rest. Reach full stats for Mario and he will power-up.\n\n" +
@@ -80,7 +82,7 @@ public class DataActivity extends AppCompatActivity {
 
         dataDescription.setText(summary);
 
-        // Back button -> return to main screen
+        // Back button returns to main screen
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(DataActivity.this, MainActivity.class);
             startActivity(intent);

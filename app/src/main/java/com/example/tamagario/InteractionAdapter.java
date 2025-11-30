@@ -16,15 +16,16 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.InteractionViewHolder> {
-
+public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.InteractionViewHolder>
+{
     private final List<Interaction> interactions;
     private final Context context;
     private final InteractionDao interactionDao;
-    private final PetDao petDao;           // <--- added
-    private final AppDatabase db;          // <--- added
+    private final PetDao petDao;
+    private final AppDatabase db;
 
-    public InteractionAdapter(Context context, List<Interaction> interactions, InteractionDao interactionDao) {
+    public InteractionAdapter(Context context, List<Interaction> interactions, InteractionDao interactionDao)
+    {
         this.context = context;
         this.interactions = interactions;
         this.interactionDao = interactionDao;
@@ -43,13 +44,15 @@ public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.
 
     @NonNull
     @Override
-    public InteractionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public InteractionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         View view = LayoutInflater.from(context).inflate(R.layout.item_interaction, parent, false);
         return new InteractionViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InteractionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InteractionViewHolder holder, int position)
+    {
         Interaction interaction = interactions.get(position);
 
         holder.typeText.setText(interaction.type);
@@ -68,22 +71,26 @@ public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return interactions.size();
     }
 
-    static class InteractionViewHolder extends RecyclerView.ViewHolder {
+    static class InteractionViewHolder extends RecyclerView.ViewHolder
+    {
         TextView typeText;
         TextView timeText;
 
-        public InteractionViewHolder(@NonNull View itemView) {
+        public InteractionViewHolder(@NonNull View itemView)
+        {
             super(itemView);
             typeText = itemView.findViewById(R.id.interaction_type);
             timeText = itemView.findViewById(R.id.interaction_time);
         }
     }
 
-    private void showEditDialog(Interaction interaction, int position) {
+    private void showEditDialog(Interaction interaction, int position)
+    {
         String[] types = {"FEED", "PLAY", "REST", "CLEAN"};
 
         new AlertDialog.Builder(context)
@@ -93,11 +100,14 @@ public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.
                     String newType = types[which];
 
                     // Only adjust stats if the type actually changed
-                    if (!oldType.equals(newType)) {
+                    if (!oldType.equals(newType))
+                    {
                         Pet pet = petDao.getSinglePet();
-                        if (pet != null) {
+                        if (pet != null)
+                        {
                             // 1. Remove +10 from the OLD type
-                            switch (oldType) {
+                            switch (oldType)
+                            {
                                 case "FEED":
                                     pet.hunger = Math.max(pet.hunger - 10, 0);
                                     break;
@@ -113,7 +123,8 @@ public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.
                             }
 
                             // 2. Add +10 to the NEW type
-                            switch (newType) {
+                            switch (newType)
+                            {
                                 case "FEED":
                                     pet.hunger = Math.min(pet.hunger + 10, 100);
                                     break;
@@ -141,8 +152,10 @@ public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.
                         Toast.makeText(context,
                                 "Interaction Updated and Stats Adjusted!",
                                 Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Type didn't change, just refresh timestamp if you want
+                    }
+                    else
+                    {
+                        // Type didn't change, just refresh timestamp ig
                         interaction.timestamp = System.currentTimeMillis();
                         interactionDao.updateInteraction(interaction);
                         notifyItemChanged(position);
@@ -156,7 +169,8 @@ public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.
                 .show();
     }
 
-    private void showDeleteDialog(Interaction interaction, int position) {
+    private void showDeleteDialog(Interaction interaction, int position)
+    {
         new AlertDialog.Builder(context)
                 .setTitle("Delete Interaction")
                 .setMessage("Are you sure you want to delete this interaction?")
@@ -164,9 +178,11 @@ public class InteractionAdapter extends RecyclerView.Adapter<InteractionAdapter.
 
                     // 1. Load the single pet
                     Pet pet = petDao.getSinglePet();
-                    if (pet != null) {
+                    if (pet != null)
+                    {
                         // 2. Subtract 10 from the respective stat, clamped at 0
-                        switch (interaction.type) {
+                        switch (interaction.type)
+                        {
                             case "FEED":
                                 pet.hunger = Math.max(pet.hunger - 10, 0);
                                 break;

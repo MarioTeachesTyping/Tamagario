@@ -2,7 +2,10 @@ package com.example.tamagario;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +18,9 @@ public class MainActivity extends AppCompatActivity
 {
     private AppDatabase db;
     private Pet currentPet;
+    private ImageView petImage;
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,6 +34,9 @@ public class MainActivity extends AppCompatActivity
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Pet image
+        petImage = findViewById(R.id.tamagario);
 
         // ---------------------------
         // Set up Room database
@@ -49,14 +58,17 @@ public class MainActivity extends AppCompatActivity
         if (currentPet == null) {
             currentPet = new Pet();
             currentPet.name = "Tamagario";
-            currentPet.hunger = 50;
-            currentPet.energy = 50;
-            currentPet.happiness = 50;
-            currentPet.hygiene = 50;
+            currentPet.hunger = 0;
+            currentPet.energy = 0;
+            currentPet.happiness = 0;
+            currentPet.hygiene = 0;
 
             long newId = petDao.insertPet(currentPet);
             currentPet.id = newId;
         }
+
+        // Set initial image based on stats (perfect vs normal)
+        updatePetImage();
 
         // ---------------------------
         // Navigation buttons
@@ -92,6 +104,12 @@ public class MainActivity extends AppCompatActivity
             interaction.type = "PLAY";
             interaction.timestamp = System.currentTimeMillis();
             interactionDao.insertInteraction(interaction);
+
+            Toast.makeText(MainActivity.this,
+                    "Increased Tamagario's Happiness by +10",
+                    Toast.LENGTH_SHORT).show();
+
+            showHappyTemporarily();
         });
 
         // Feed -> hunger up
@@ -104,6 +122,12 @@ public class MainActivity extends AppCompatActivity
             interaction.type = "FEED";
             interaction.timestamp = System.currentTimeMillis();
             interactionDao.insertInteraction(interaction);
+
+            Toast.makeText(MainActivity.this,
+                    "Increased Tamagario's Hunger by +10",
+                    Toast.LENGTH_SHORT).show();
+
+            showHappyTemporarily();
         });
 
         // Clean -> hygiene up
@@ -116,6 +140,12 @@ public class MainActivity extends AppCompatActivity
             interaction.type = "CLEAN";
             interaction.timestamp = System.currentTimeMillis();
             interactionDao.insertInteraction(interaction);
+
+            Toast.makeText(MainActivity.this,
+                    "Increased Tamagario's Hygiene by +10",
+                    Toast.LENGTH_SHORT).show();
+
+            showHappyTemporarily();
         });
 
         // Rest -> energy up
@@ -128,6 +158,50 @@ public class MainActivity extends AppCompatActivity
             interaction.type = "REST";
             interaction.timestamp = System.currentTimeMillis();
             interactionDao.insertInteraction(interaction);
+
+            Toast.makeText(MainActivity.this,
+                    "Increased Tamagario's Energy by +10",
+                    Toast.LENGTH_SHORT).show();
+
+            showHappyTemporarily();
         });
+    }
+
+    // Sets image based on current stats (no 1-second logic here)
+    private void updatePetImage() {
+        if (isPetPerfect()) {
+            petImage.setImageResource(R.drawable.tamagario_perfect);
+        } else {
+            petImage.setImageResource(R.drawable.tamagario);
+        }
+    }
+
+    private boolean isPetPerfect() {
+        return currentPet.hunger == 100 &&
+                currentPet.energy == 100 &&
+                currentPet.happiness == 100 &&
+                currentPet.hygiene == 100;
+    }
+
+    // Show happy for 1 second, then revert to normal or perfect
+    private void showHappyTemporarily() {
+        // If pet is perfect after this interaction, just show perfect permanently
+        if (isPetPerfect()) {
+            petImage.setImageResource(R.drawable.tamagario_perfect);
+            return;
+        }
+
+        // Show happy
+        petImage.setImageResource(R.drawable.tamagario_happy);
+
+        // After 1 second, revert to normal (or perfect if it somehow became perfect)
+        handler.removeCallbacksAndMessages(null);
+        handler.postDelayed(() -> {
+            if (isPetPerfect()) {
+                petImage.setImageResource(R.drawable.tamagario_perfect);
+            } else {
+                petImage.setImageResource(R.drawable.tamagario);
+            }
+        }, 1000); // 1000 ms = 1 second
     }
 }

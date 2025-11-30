@@ -3,6 +3,7 @@ package com.example.tamagario;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,10 @@ public class SettingsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Set description text
+        TextView description = findViewById(R.id.settings_description);
+        description.setText("Tap to change the interaction type. \nHold to delete the interaction.");
 
         // Set up Room
         db = Room.databaseBuilder(
@@ -63,3 +68,4 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 }
+

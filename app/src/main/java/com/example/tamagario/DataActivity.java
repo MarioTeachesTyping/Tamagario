@@ -41,10 +41,10 @@ public class DataActivity extends AppCompatActivity {
         if (currentPet == null) {
             currentPet = new Pet();
             currentPet.name = "Tamagario";
-            currentPet.hunger = 50;
-            currentPet.energy = 50;
-            currentPet.happiness = 50;
-            currentPet.hygiene = 50;
+            currentPet.hunger = 0;
+            currentPet.energy = 0;
+            currentPet.happiness = 0;
+            currentPet.hygiene = 0;
             long id = petDao.insertPet(currentPet);
             currentPet.id = id;
         }
@@ -69,11 +69,15 @@ public class DataActivity extends AppCompatActivity {
         hygieneBar.setProgress(currentPet.hygiene);
         energyBar.setProgress(currentPet.energy);
 
-        // Simple summary text
-        String summary = "Happiness: " + currentPet.happiness + "/100\n"
-                + "Hunger: " + currentPet.hunger + "/100\n"
-                + "Hygiene: " + currentPet.hygiene + "/100\n"
-                + "Energy: " + currentPet.energy + "/100";
+        // Description + stats
+        String summary =
+                        "Take care of your pet Mario by interacting with him in different actions! " +
+                        "Play, feed, clean, or let him rest. Reach full stats for Mario and he will power-up.\n\n" +
+                        "Happiness: " + currentPet.happiness + "/100\n" +
+                        "Hunger: " + currentPet.hunger + "/100\n" +
+                        "Hygiene: " + currentPet.hygiene + "/100\n" +
+                        "Energy: " + currentPet.energy + "/100";
+
         dataDescription.setText(summary);
 
         // Back button -> return to main screen

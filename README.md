@@ -5,10 +5,12 @@ Take care of a pet Mario. Haha wow so cool and cute!
 
 ## Stats
 ```
+Obtain 100/100 for all of Mario's stats and he will become invincible!
+
 😊 Happiness
 🍄 Hunger
 🛁 Hygiene
-🔋 Energy
+🥀 Energy
 ```
 
 ## Interactions

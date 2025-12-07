@@ -1,12 +1,28 @@
 # Tamagario
-Take care of a pet Mario.
+Take care of a pet Mario. Haha wow so cool and cute!
 
-Haha wow so cool and cute!
+![Gameplay Video](assets/tamagario-gameplay.gif)
 
-![Gameplay Screenshot](assets/tamagario-gameplay.jpg)
+## Stats
+```
+😊 Happiness
+🍄 Hunger
+🛁 Hygiene
+🔋 Energy
+```
 
 ## Interactions
-- Play
-- Feed
-- Clean
-- Rest
+```
+🎮 Play  - Increase Happiness by +10
+🍝 Feed  - Increase Hunger by +10
+🧼 Clean - Increase Hygiene by +10
+💤 Rest  - Increase Energy by +10
+```
+
+## Emulator
+```
+Android 16.0 ("Baklava") - Pixel 8
+```
+
+---
+I ❤️ Mario!
